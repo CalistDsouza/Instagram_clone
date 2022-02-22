@@ -14,9 +14,10 @@ class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<model.User> getUserDetails() async {
-    User currentUser= _auth.currentUser!;
+    User currentUser = _auth.currentUser!;
 
-    DocumentSnapshot snap= await _firestore.collection('users').doc(currentUser.uid).get();
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
 
     return model.User.fromSnap(snap);
   }
@@ -34,14 +35,15 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty) {
+          bio.isNotEmpty ||
+          file!= null) {
         // register the user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        print(cred.user!.uid);
+        // print(cred.user!.uid);
 
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
@@ -62,6 +64,8 @@ class AuthMethods {
             .set(user.toJson());
 
         res = "success";
+      } else {
+        res = "Please enter all the fields";
       }
     } catch (err) {
       res = err.toString();
