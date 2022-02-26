@@ -8,7 +8,7 @@ import 'package:instagram_flutter/utils/colors.dart';
 import 'package:instagram_flutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-// import '../models/user.dart';
+// import '../models/user.dart' as model;
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -60,9 +60,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
+    
+    return 
+    user==null ? const Center(child: CircularProgressIndicator(),) :
 
-    return _file == null
+    _file == null
         ? Center(
             child: IconButton(
               icon: const Icon(Icons.upload),
@@ -99,8 +102,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(
+                      backgroundImage: 
+                      NetworkImage(
                         user.photoUrl,
+                        // 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
                       ),
                     ),
                     SizedBox(
